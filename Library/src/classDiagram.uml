@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="218.0" y="352.5">Disertation</node>
+    <node x="343.0" y="352.5">Thesis</node>
+    <node x="289.0" y="0.0">Item</node>
+    <node x="444.0" y="319.5">Book</node>
+    <node x="0.0" y="231.0">Library</node>
+    <node x="623.0" y="308.5">Person</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Library" target="Item">
+      <point x="66.0" y="-136.0" />
+      <point x="165.0" y="201.0" />
+      <point x="341.5" y="201.0" />
+      <point x="-42.0" y="80.5" />
+    </edge>
+    <edge source="Book" target="Item">
+      <point x="0.0" y="-47.5" />
+      <point x="523.5" y="211.0" />
+      <point x="404.5" y="211.0" />
+      <point x="21.0" y="80.5" />
+    </edge>
+    <edge source="Person" target="Item">
+      <point x="0.0" y="-58.5" />
+      <point x="728.5" y="191.0" />
+      <point x="446.5" y="191.0" />
+      <point x="63.0" y="80.5" />
+    </edge>
+    <edge source="Disertation" target="Item">
+      <point x="0.0" y="-14.5" />
+      <point x="270.5" y="211.0" />
+      <point x="362.5" y="211.0" />
+      <point x="-21.0" y="80.5" />
+    </edge>
+    <edge source="Thesis" target="Item">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="80.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="254.5" y="64.0" />
+  <SelectedNodes>
+    <node>Item</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
