@@ -232,7 +232,8 @@ public class Library {
                 LinkedList<Item> borrowed = new LinkedList<>();
                 for (int i = 3; i < arr.size(); i++)
                 {
-                    borrowed.add(this.searchById(Integer.parseInt(arr.get(i))));
+                    int id = Integer.parseInt(arr.get(3));
+                    borrowed.add(this.searchById(id));
                 }
                 members.add(new Person(Integer.parseInt(arr.get(0)),arr.get(1),Integer.parseInt(arr.get(2)), borrowed));
             } catch (Exception e) {

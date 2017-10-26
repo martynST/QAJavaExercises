@@ -56,15 +56,18 @@ public class Person {
     public String toString()
     {
         String returnString;
-        String sep = System.lineSeparator();
         if (isRegistered)
         {
-            returnString =  id + "," + name + "," + maxBorrow + ",";
-            for (int i = 0; i < borrowed.size(); i++)
+            returnString =  id + "," + name + "," + maxBorrow;
+            if (borrowed.size() != 0)
             {
-                returnString += borrowed.get(i).getId();
-                if (i != borrowed.size() -1 )
-                    returnString += ",";
+                returnString += ",";
+                for (int i = 0; i < borrowed.size(); i++)
+                {
+                    returnString += borrowed.get(i).getId();
+                    if (i != borrowed.size() -1 )
+                        returnString += ",";
+                }
             }
             return returnString;
         }

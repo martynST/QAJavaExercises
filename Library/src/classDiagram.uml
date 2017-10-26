@@ -3,15 +3,15 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
+    <node x="371.96153846153845" y="724.0769230769231">Disertation</node>
     <node x="288.0" y="533.0">Academic</node>
-    <node x="290.25" y="0.0">Item</node>
-    <node x="618.5" y="690.0">Book</node>
-    <node x="579.5" y="477.0">CanBorrow</node>
-    <node x="373.5" y="701.0">Disertation</node>
     <node x="81.75" y="701.0">Thesis</node>
+    <node x="290.25" y="0.0">Item</node>
     <node x="0.0" y="533.0">CantBorrow</node>
-    <node x="981.5" y="0.0">Library</node>
+    <node x="618.5" y="690.0">Book</node>
+    <node x="1032.75" y="3.75">Library</node>
     <node x="0.0" y="876.0">Person</node>
+    <node x="579.5" y="477.0">CanBorrow</node>
   </nodes>
   <notes />
   <edges>
@@ -52,9 +52,9 @@
       <point x="-47.25" y="25.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.6000000000000001" x="797.9999999999998" y="312.33333333333326" />
+  <settings layout="Hierarchic Group" zoom="0.9" x="926.0909090909089" y="446.0" />
   <SelectedNodes>
-    <node>Person</node>
+    <node>Library</node>
   </SelectedNodes>
   <Categories>
     <Category>Fields</Category>

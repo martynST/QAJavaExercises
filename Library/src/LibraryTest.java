@@ -12,6 +12,7 @@ public class LibraryTest {
     ArrayList<Item> myItems = new ArrayList<Item>();
     ArrayList<Person> myPeople = new ArrayList<Person>();
     String path = "C:\\Users\\Admin\\IdeaProjects\\QAJavaExercises\\QAJavaExercises\\Library";
+
     @Before
     public void setup()
     {
@@ -34,10 +35,10 @@ public class LibraryTest {
         library.registerPerson(p1);
         library.addItem(b1);
         //has changed
-        assertEquals("LIBRARY\n\nHard Back Book, ID: 1, Title: The Name of the Wind, Author: Patrick Rothfuss, Year: 2007, Genre: Fantasy\n\n\nMEMBERS\n\nID: 1, Name: Martyn, Max Borrow Allowance: 5.\n",library.toString());
+        assertEquals("LIBRARY\n\nbook,The Name of the Wind,Patrick Rothfuss,2007,1,Hard Back,Fantasy,true\n\nMEMBERS\n\n1,Martyn,5\n",library.toString());
         library.deletePerson(p1);
         library.removeItem(b1);
-        assertEquals("LIBRARY\n\nMEMBERS\n\n",library.toString());
+        assertEquals("LIBRARY\n\n\nMEMBERS\n\n",library.toString());
     }
     @Test
     public void testCheckInOut()
@@ -73,5 +74,11 @@ public class LibraryTest {
     {
         library.reset();
         library.readLibrary(path);
+    }
+    @Test
+    public void testError()
+    {
+        library.removeItem(b1);
+        library.deletePerson(p1);
     }
 }
