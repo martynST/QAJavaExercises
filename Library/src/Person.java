@@ -82,7 +82,15 @@ public class Person {
         }
     }
 
-
+    public boolean inBorrowed(Item i)
+    {
+        for (Item item : borrowed)
+        {
+            if (item.getId() == i.getId())
+                return true;
+        }
+        return false;
+    }
     public int getId()
     {
         return id;

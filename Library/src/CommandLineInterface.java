@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -5,15 +6,15 @@ public class CommandLineInterface {
 
     private Scanner input = new Scanner(System.in);
     Library library = new Library();
-    private boolean keepGoing = true;
+    private boolean keepGoing;
 
     public static void main(String[] args)
     {
 
         CommandLineInterface clm = new CommandLineInterface();
+        clm.keepGoing = true;
         clm.welcome();
-        boolean keepGoing = true;
-        while (keepGoing)
+        while (clm.keepGoing)
             clm.listener();
 
     }
@@ -23,6 +24,7 @@ public class CommandLineInterface {
     }
     public void listener()
     {
+        System.out.print("Please enter command: ");
         String userInput = input.nextLine();
         userInput = userInput.toUpperCase();
         switch (userInput)
@@ -36,9 +38,42 @@ public class CommandLineInterface {
             case "REMOVE ITEM":
                 removeItem();
                 break;
-            case "":
-
-
+            case "CHECK OUT":
+                checkOut();
+                break;
+            case "CHECK IN":
+                checkIn();
+                break;
+            case "ADD PERSON":
+                registerPerson();
+                break;
+            case "REMOVE PERSON":
+                removePerson();
+                break;
+            case "EDIT ITEM":
+                editItem();
+                break;
+            case "EDIT PERSON":
+                editPerson();
+                break;
+            case "SAVE LIBRARY":
+                saveLibrary();
+                break;
+            case "LOAD LIBRARY":
+                loadLibrary();
+                break;
+            case "DISPLAY ITEMS":
+                displayItems();
+                break;
+            case "QUIT":
+            keepGoing = false;
+            break;
+            case "EXIT":
+            keepGoing = false;
+            break;
+            default:
+                System.out.println("Invalid input");
+                break;
         }
     }
     private void getHelp()
@@ -49,9 +84,13 @@ public class CommandLineInterface {
         System.out.println("Check in: Check out an item from The Library.");
         System.out.println("check out: Check out an item from The Library.");
         System.out.println("Update Item: Update the information of an item.");
-        System.out.println("Register Person: Register a new person at The Library.");
-        System.out.println("Delete Person: Delete a person from The Library.");
+        System.out.println("Add Person: Register a new person at The Library.");
+        System.out.println("Remove Person: Delete a person from The Library.");
         System.out.println("Update Person: Update a registered person's information.");
+        System.out.println("Save Library: Save the library to a file.");
+        System.out.println("Load Library: Load the library from a file.");
+        System.out.println("Display Items: Display the items in The Library.");
+        System.out.println("Exit/Quit: End the program");
     }
     private void addItem()
     {
@@ -115,20 +154,252 @@ public class CommandLineInterface {
     }
     private void removeItem()
     {
-
-        while (true)
+        System.out.print("Please enter the ID of the item you would like to remove: ");
+        String id = nextLine();
+        if (isValidNum(id))
         {
-            System.out.print("Please enter the ID of the item you would like to remove:");
-            String id = nextLine();
-            if (id.equals("CANCEL"))
-                break;
-            if (isValidNum(id))
+            if (library.searchByIdItem(Integer.parseInt(id)) == null)
             {
-                library.removeItem(library.searchById(Integer.parseInt(id)));
+                System.out.println("Item does not exist.");
+            } else {
+                System.out.println("Please confirm you would like to delete this item:\n" + library.searchByIdItem(Integer.parseInt(id)));
+                String yesNo = nextLine();
+                while (!isValidYesNo(yesNo))
+                {
+                    System.out.println("Invalid input, type yes or no.\nPlease confirm you would like to delete this item:\n" + library.searchByIdItem(Integer.parseInt(id)));
+                    yesNo = nextLine();
+                }
+                if (yesNo.equals("YES"))
+                {
+                    library.removeItem(library.searchByIdItem(Integer.parseInt(id)));
+                    System.out.println("Item removed!");
+                }
+                else
+                    System.out.println("Canceled removing item.");
+
             }
-
         }
+    }
+    private void checkOut()
+    {
+        Person p = checkOutPerson();
+        if (p == null)
+            return;
+        Item i = checkOutItem();
+        if (i == null)
+            return;
+        library.checkOut(i,p);
+        System.out.println("Item checked out!");
+    }
+    private Person checkOutPerson()
+    {
+        System.out.print("Please enter the ID of the person who is checking out an item: ");
+        String idP = nextLine();
+        Person p;
+        if (isValidNum(idP)) {
+            if (library.searchByIdPerson(Integer.parseInt(idP)) == null) {
+                System.out.println("Person does not exist.");
+                return null;
+            } else {
+                p = library.searchByIdPerson(Integer.parseInt(idP));
+                System.out.println("Please confirm this correct user:\n" + p.getId() + ": " + p.getName());
+                String yesNo = nextLine();
+                while (!isValidYesNo(yesNo)) {
+                    System.out.println("Please confirm this correct user:\n" + p.getId() + ": " + p.getName());
+                    yesNo = nextLine();
+                }
+                if (yesNo.equals("YES")) {
+                    if (p.getBorrowed().size() < p.getMaxBorrow()) {
 
+                    } else {
+                        System.out.println("Person has too many items borrowed at the moment. Please return some to take out more.");
+                        return null;
+                    }
+                } else {
+                    System.out.println("Canceled checking out item.");
+                    return null;
+                }
+            }
+        } else {
+            System.out.println("Invalid id.");
+            return null;
+        }
+        return p;
+    }
+    private Item checkOutItem()
+    {
+        System.out.print("Please enter the ID of the book you would like to check out: ");
+        String idI = nextLine();
+        Item i;
+        if (isValidNum(idI)) {
+            if (library.searchByIdItem(Integer.parseInt(idI)) == null) {
+                System.out.println("Item, does not exist.");
+                return null;
+            } else {
+                i = library.searchByIdItem(Integer.parseInt(idI));
+                System.out.println("Please confirm this correct item:\n" + i.getId() + ": " + i.getTitle() + " by " + i.getAuthor());
+                String yesNo = nextLine();
+                while (!isValidYesNo(yesNo)) {
+                    System.out.println("Please confirm this correct item:\n" + i.getId() + ": " + i.getTitle());
+                    yesNo = nextLine();
+                }
+                if (yesNo.equals("YES")) {
+                    if (i instanceof CanBorrow) {
+                        if (((CanBorrow) i).getIsCheckedOut() == false) {
+
+                        } else {
+                            System.out.println("This item is current check out.");
+                            return null;
+                        }
+                    } else {
+                        System.out.println("This type of item cannot be taken out.");
+                        return null;
+                    }
+                } else {
+                    System.out.println("Canceled checking out item.");
+                    return null;
+                }
+            }
+        } else {
+            System.out.println("Invalid id.");
+            return null;
+        }
+        return i;
+    }
+    private void checkIn()
+    {
+        Person p = checkInPerson();
+        Item i = checkInItem();
+        if (p.inBorrowed(i))
+            library.checkIn(i);
+        else
+            System.out.println("This person has not borrowed this item");
+    }
+    private Person checkInPerson()
+    {
+        System.out.print("Please enter the ID of the person who is checking in an item: ");
+        String idP = nextLine();
+        Person p;
+        if (isValidNum(idP)) {
+            if (library.searchByIdPerson(Integer.parseInt(idP)) == null) {
+                System.out.println("Person does not exist.");
+                return null;
+            } else {
+                p = library.searchByIdPerson(Integer.parseInt(idP));
+                System.out.println("Please confirm this correct user:\n" + p.getId() + ": " + p.getName());
+                String yesNo = nextLine();
+                while (!isValidYesNo(yesNo)) {
+                    System.out.println("Please confirm this correct user:\n" + p.getId() + ": " + p.getName());
+                    yesNo = nextLine();
+                }
+                if (yesNo.equals("YES")) {
+                    return p;
+                } else {
+                    System.out.println("Canceled checking in item.");
+                    return null;
+                }
+            }
+        } else {
+            System.out.println("Invalid id.");
+            return null;
+        }
+    }
+    private Item checkInItem()
+    {
+        System.out.print("Please enter the ID of the book you would like to check in: ");
+        String idI = nextLine();
+        Item i;
+        if (isValidNum(idI)) {
+            if (library.searchByIdItem(Integer.parseInt(idI)) == null) {
+                System.out.println("Item, does not exist.");
+                return null;
+            } else {
+                i = library.searchByIdItem(Integer.parseInt(idI));
+                System.out.println("Please confirm this correct item:\n" + i.getId() + ": " + i.getTitle() + " by " + i.getAuthor());
+                String yesNo = nextLine();
+                while (!isValidYesNo(yesNo)) {
+                    System.out.println("Please confirm this correct item:\n" + i.getId() + ": " + i.getTitle());
+                    yesNo = nextLine();
+                }
+                if (yesNo.equals("YES")) {
+                    if (((CanBorrow) i).getIsCheckedOut() == true) {
+                        return i;
+                    } else {
+                        System.out.println("This item is current not check out.");
+                        return null;
+                    }
+                } else {
+                    System.out.println("Canceled checking out item.");
+                    return null;
+                }
+            }
+        } else {
+            System.out.println("Invalid id.");
+            return null;
+        }
+    }
+    private void registerPerson()
+    {
+        System.out.print("Please enter the name of the person: ");
+        String name = input.nextLine();
+        library.registerPerson(new Person(name));
+        System.out.println("Person registered!");
+    }
+    private void removePerson()
+    {
+        System.out.print("Please enter the ID of the person you would like to remove: ");
+        String id = nextLine();
+        if (isValidNum(id))
+        {
+            if (library.searchByIdPerson(Integer.parseInt(id)) == null)
+            {
+                System.out.println("Person does not exist.");
+            } else {
+                System.out.println("Please confirm you would like to delete this person:\n" + library.searchByIdPerson(Integer.parseInt(id)));
+                String yesNo = nextLine();
+                while (!isValidYesNo(yesNo))
+                {
+                    System.out.println("Invalid input, type yes or no.\nPlease confirm you would like to delete this person:\n" + library.searchByIdPerson(Integer.parseInt(id)));
+                    yesNo = nextLine();
+                }
+                if (yesNo.equals("YES"))
+                {
+                    library.deletePerson(library.searchByIdPerson(Integer.parseInt(id)));
+                    System.out.println("Person removed!");
+                }
+                else
+                    System.out.println("Canceled removing person.");
+
+            }
+        }
+    }
+    private void displayItems()
+    {
+        library.displayLibrary();
+    }
+    private void editItem()
+    {
+        System.out.println("PLace Holder");
+    }
+    private void editPerson()
+    {
+        System.out.println("Please enter the ");
+    }
+    private void saveLibrary()
+    {
+        System.out.print("Please enter the path of the location you would like to save the library: ");
+        String path = nextLine();
+
+        if (library.writeLibrary(path))
+            System.out.println("Library saved!");
+    }
+    private void loadLibrary()
+    {
+        System.out.print("Please enter the path of the library you would like to load. Warning, this will delete your current library");
+        String path = nextLine();
+
+        if (library.readLibrary(path))
+            System.out.println("Library loaded!");
     }
     private boolean isValidType(String type)
     {
@@ -200,7 +471,7 @@ public class CommandLineInterface {
                     break;
                 if (isValidNum(id))
                 {
-                    citations.add(library.searchById(Integer.parseInt(id)));
+                    citations.add(library.searchByIdItem(Integer.parseInt(id)));
                     System.out.println("Citation added");
                 }
 
@@ -210,6 +481,7 @@ public class CommandLineInterface {
     }
     private String nextLine()
     {
-        return input.nextLine().toUpperCase();
+        String returnString = input.nextLine().toUpperCase();
+        return returnString;
     }
 }

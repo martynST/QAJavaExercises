@@ -1,5 +1,4 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -65,6 +64,13 @@ public class Library {
             p.removed();
         }
     }
+    public void displayLibrary()
+    {
+        for (Item i : library)
+        {
+            System.out.println("ID: " + i.getId() + " Type: " + i.getType() + " Title:" + i.getTitle() + " Author:" + i.getAuthor() + " Year:" + i.getYear());
+        }
+    }
 
     public void updateItemTitle(Item i, String title)
     {
@@ -114,7 +120,7 @@ public class Library {
         }
         return returnString;
     }
-    public Item searchById(int id)
+    public Item searchByIdItem(int id)
     {
         for (Item i : library)
         {
@@ -123,21 +129,38 @@ public class Library {
         }
         return null;
     }
-
-    public void writeLibrary(String path)
+    public Person searchByIdPerson(int id)
     {
-        write(library.toArray(), path+"\\Library.txt");
-        write(members.toArray(), path+"\\Members.txt");
+        for (Person p : members)
+        {
+            if (p.getId() == id)
+                return p;
+        }
+        return null;
     }
-    private void write(Object[] myList, String path)
+
+    public boolean writeLibrary(String path)
+    {
+
+        if (write(library.toArray(), path + "\\Library.txt"))
+            if(write(members.toArray(), path + "\\Members.txt"))
+                return true;
+            else
+                return false;
+        else
+            return false;
+
+    }
+    private boolean write(Object[] myList, String path)
     {
         BufferedWriter bw = null;
+        boolean returnBoolean = false;
         try {
 
             File file = new File(path);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
 
             FileWriter fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
@@ -147,8 +170,10 @@ public class Library {
                 bw.write(thisElement);
                 bw.newLine();
             }
+            returnBoolean = true;
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            System.out.println("Error is saving file " + ioe);
+            returnBoolean = false;
         } finally {
             try {
                 if (bw!=null)
@@ -157,14 +182,21 @@ public class Library {
                 System.out.println("Error in closing the buffered Writer"+ex);
             }
         }
+        return returnBoolean;
     }
-    public void readLibrary(String path)
+    public boolean readLibrary(String path)
     {
         ArrayList<String> itemString = read(path+"\\Library.txt");
+        if (itemString.equals(null))
+            return false;
         ArrayList<String> memberString = read(path+"\\Members.txt");
+        if (itemString.equals(null))
+            return false;
+
         importItems(parseString(itemString));
         importMembers(parseString(memberString));
         syncLibrary();
+        return true;
     }
     private ArrayList<String> read(String path)
     {
@@ -182,7 +214,7 @@ public class Library {
                 lines.add(holder);
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            System.out.println("Error is reading file " + ioe);
         } finally {
             try {
                 if (br != null)
@@ -233,7 +265,7 @@ public class Library {
                 for (int i = 3; i < arr.size(); i++)
                 {
                     int id = Integer.parseInt(arr.get(3));
-                    borrowed.add(this.searchById(id));
+                    borrowed.add(this.searchByIdItem(id));
                 }
                 members.add(new Person(Integer.parseInt(arr.get(0)),arr.get(1),Integer.parseInt(arr.get(2)), borrowed));
             } catch (Exception e) {
@@ -248,6 +280,9 @@ public class Library {
     }
     public void syncLibrary()
     {
-
+        for (Person m : members)
+        {
+            m.syncWithItems();
+        }
     }
 }
