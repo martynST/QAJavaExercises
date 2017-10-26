@@ -8,16 +8,18 @@ public class Library {
 
     public void checkOut(Item i, Person p)
     {
-        if (!i.getIsCheckedOut() && i instanceof canBorrow && p.getMaxBorrow() > p.getBorrowed().size())
+        if (i instanceof CanBorrow)
         {
-            i.checkOut(p);
+            if (!((CanBorrow) i).getIsCheckedOut() && p.getMaxBorrow() > p.getBorrowed().size())
+                ((CanBorrow) i).checkOut(p);
         } else {
 
         }
     }
     public void checkIn(Item i)
     {
-        i.checkIn();
+        if (i instanceof CanBorrow)
+            ((CanBorrow) i).checkIn();
     }
     public void addItem(Item i)
     {
@@ -29,6 +31,28 @@ public class Library {
         library.remove(i);
         i.setId(0);
     }
+
+    public void registerPerson(Person p, int maxBorrow)
+    {
+        if (!p.getIsRegistered())
+        {
+            members.add(p);
+            p.register(++idPerson, maxBorrow);
+        }
+    }
+    public void registerPerson(Person p)
+    {
+        registerPerson(p,5);
+    }
+    public void deletePerson(Person p)
+    {
+        if (p.getIsRegistered())
+        {
+            members.remove(p);
+            p.removed();
+        }
+    }
+
     public void updateItemTitle(Item i, String title)
     {
         i.updateTitle(title);
@@ -50,23 +74,6 @@ public class Library {
         i.update(title,author,year,type);
     }
 
-    public void registerPerson(Person p)
-    {
-        if (!p.getIsRegistered())
-        {
-            members.add(p);
-            p.register(++idPerson);
-        }
-    }
-    public void deletePerson(Person p)
-    {
-        if (p.getIsRegistered())
-        {
-            members.remove(p);
-            p.removed();
-        }
-    }
-
     public void updatePerson(Person p, String name)
     {
         p.update(name);
@@ -80,5 +87,18 @@ public class Library {
         p.update(name, maxBorrow);
     }
 
-
+    public String toString()
+    {
+        String returnString = "LIBRARY\n\n";
+        for (Item i : library)
+        {
+            returnString += i.toString() + "\n";
+        }
+        returnString += "\n\nMEMBERS\n\n";
+        for (Person p : members)
+        {
+            returnString += p.toString() + "\n";
+        }
+        return returnString;
+    }
 }

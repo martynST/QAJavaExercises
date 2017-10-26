@@ -20,10 +20,6 @@ public class Person {
     {
         borrowed.remove(i);
     }
-    public void register(int id)
-    {
-        this.register(id, 5);
-    }
     public void register(int id, int maxBorrow)    {
         this.isRegistered = true;
         this.id = id;
@@ -50,7 +46,13 @@ public class Person {
         this.maxBorrow = maxBorrow;
     }
 
-
+    public String toString()
+    {
+        if (isRegistered)
+            return "ID: " + id + ", Name: " + name + ", Max Borrow Allowance: " + maxBorrow + ".";
+        else
+            return "Name: " + name + ".";
+    }
 
 
 

@@ -4,8 +4,6 @@ public abstract class Item {
     private int id;
     private int year;
     private String type;
-    private boolean isCheckedOut;
-    private Person checkedOutBy;
 
     public Item (String title, String author, int year, String type)
     {
@@ -14,21 +12,10 @@ public abstract class Item {
         this.year = year;
         this.type = type;
     }
-
-    public void checkOut(Person p)
-    {
-        isCheckedOut = true;
-        checkedOutBy = p;
-        p.checkOut(this);
-    }
-    public void checkIn()
-    {
-        checkedOutBy.checkIn(this);
-        isCheckedOut = false;
-    }
     public void setId(int id) {
         this.id = id;
     }
+
     public void updateTitle(String title)
     {
         this.title = title;
@@ -79,8 +66,8 @@ public abstract class Item {
         return type;
     }
 
-    public boolean getIsCheckedOut()
+    public String toString()
     {
-        return isCheckedOut;
+        return type + ", ID: " + id + ", Title: " + title + ", Author: " + author + ", Year: " + year;
     }
 }
