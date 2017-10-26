@@ -3,47 +3,58 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="218.0" y="352.5">Disertation</node>
-    <node x="343.0" y="352.5">Thesis</node>
-    <node x="289.0" y="0.0">Item</node>
-    <node x="444.0" y="319.5">Book</node>
-    <node x="0.0" y="231.0">Library</node>
-    <node x="623.0" y="308.5">Person</node>
+    <node x="288.0" y="533.0">Academic</node>
+    <node x="290.25" y="0.0">Item</node>
+    <node x="618.5" y="690.0">Book</node>
+    <node x="579.5" y="477.0">CanBorrow</node>
+    <node x="373.5" y="701.0">Disertation</node>
+    <node x="81.75" y="701.0">Thesis</node>
+    <node x="0.0" y="533.0">CantBorrow</node>
+    <node x="981.5" y="0.0">Library</node>
+    <node x="0.0" y="876.0">Person</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="Library" target="Item">
-      <point x="66.0" y="-136.0" />
-      <point x="165.0" y="201.0" />
-      <point x="341.5" y="201.0" />
-      <point x="-42.0" y="80.5" />
+    <edge source="CanBorrow" target="Item">
+      <point x="0.0" y="-81.5" />
+      <point x="711.5" y="452.0" />
+      <point x="489.0" y="452.0" />
+      <point x="66.25" y="213.5" />
     </edge>
-    <edge source="Book" target="Item">
-      <point x="0.0" y="-47.5" />
-      <point x="523.5" y="211.0" />
-      <point x="404.5" y="211.0" />
-      <point x="21.0" y="80.5" />
+    <edge source="Disertation" target="Academic">
+      <point x="-56.25" y="-59.5" />
+      <point x="47.25" y="25.5" />
     </edge>
-    <edge source="Person" target="Item">
-      <point x="0.0" y="-58.5" />
-      <point x="728.5" y="191.0" />
-      <point x="446.5" y="191.0" />
-      <point x="63.0" y="80.5" />
+    <edge source="CantBorrow" target="Item">
+      <point x="0.0" y="-25.5" />
+      <point x="134.0" y="452.0" />
+      <point x="356.5" y="452.0" />
+      <point x="-66.25" y="213.5" />
     </edge>
-    <edge source="Disertation" target="Item">
-      <point x="0.0" y="-14.5" />
-      <point x="270.5" y="211.0" />
-      <point x="362.5" y="211.0" />
-      <point x="-21.0" y="80.5" />
+    <edge source="Thesis" target="CantBorrow">
+      <point x="-52.25" y="-59.5" />
+      <point x="0.0" y="25.5" />
     </edge>
-    <edge source="Thesis" target="Item">
-      <point x="0.0" y="-14.5" />
-      <point x="0.0" y="80.5" />
+    <edge source="Book" target="CanBorrow">
+      <point x="0.0" y="-70.5" />
+      <point x="66.0" y="81.5" />
+    </edge>
+    <edge source="Disertation" target="CanBorrow">
+      <point x="56.25" y="-59.5" />
+      <point x="542.25" y="665.0" />
+      <point x="645.5" y="665.0" />
+      <point x="-66.0" y="81.5" />
+    </edge>
+    <edge source="Thesis" target="Academic">
+      <point x="52.25" y="-59.5" />
+      <point x="238.5" y="665.0" />
+      <point x="335.25" y="665.0" />
+      <point x="-47.25" y="25.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0" x="254.5" y="64.0" />
+  <settings layout="Hierarchic Group" zoom="0.6000000000000001" x="797.9999999999998" y="312.33333333333326" />
   <SelectedNodes>
-    <node>Item</node>
+    <node>Person</node>
   </SelectedNodes>
   <Categories>
     <Category>Fields</Category>

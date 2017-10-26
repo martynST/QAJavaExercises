@@ -1,7 +1,6 @@
 import static org.junit.Assert.*;
-
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.Before;
 
 public class LibraryTest {
 
@@ -34,5 +33,9 @@ public class LibraryTest {
         assertEquals(b.toString(),p.getBorrowed().get(0).toString());
         library.checkIn(b);
     }
-
+    @Test
+    public void testReadWrite()
+    {
+        String path = "C:\\Users\\Admin\\IdeaProjects\\QAJavaExercises\\QAJavaExercises\\Library\\Library.txt";
+    }
 }

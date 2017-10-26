@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 
 public class Library {
@@ -100,5 +101,83 @@ public class Library {
             returnString += p.toString() + "\n";
         }
         return returnString;
+    }
+
+    public void writeLibrary(String path)
+    {
+        BufferedWriter bw = null;
+
+        try {
+
+            File file = new File(path);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileWriter fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            for (Item i : library)
+            {
+                String thisItem = i.toString();
+                bw.write(thisItem);
+                bw.newLine();
+            }
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            try {
+                if (bw!=null)
+                    bw.close();
+            } catch (Exception ex) {
+                System.out.println("Error in closing the buffered Writer"+ex);
+            }
+        }
+    }
+    public void readLibrary(String path)
+    {
+        BufferedReader br = null;
+        ArrayList<String> lines = new ArrayList<String>();
+        try
+        {
+            File file = new File(path);
+            FileReader fr = new FileReader(file);
+            br = new BufferedReader(fr);
+
+            String holder;
+
+            while ((holder = br.readLine()) != null) {
+                lines.add(holder);
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            try {
+                if (br != null)
+                    br.close();
+            } catch (Exception ex){
+                System.out.println("Error in closing the buffered Reader");
+            }
+        }
+        parseLines(lines);
+    }
+    private void parseLines(ArrayList<String> lines)
+    {
+        ArrayList<Person> people = new ArrayList<Person>();
+        ArrayList<String> inputs = new ArrayList<String>();
+        for (String s : lines)
+        {
+            while (s.indexOf(",") != -1)
+            {
+                inputs.add(s.substring(s.indexOf(":")+2,s.indexOf(",")));
+                s = s.replace(s,s.substring(s.indexOf(",") + 2));
+            }
+            inputs.add(s.substring(s.indexOf(":")+2,s.indexOf(".")));
+            try {
+                //people.add(new Person(inputs.get(0),inputs.get(1),Integer.parseInt(inputs.get(2))));
+            } catch (Exception e) {
+                System.out.println("Error parsing integer" + e);
+            }
+        }
     }
 }

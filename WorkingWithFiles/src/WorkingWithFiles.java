@@ -38,7 +38,7 @@ public class WorkingWithFiles {
                 if (bw!=null)
                     bw.close();
             } catch (Exception ex) {
-                System.out.println("Error in closing the bufferedWritter"+ex);
+                System.out.println("Error in closing the buffered Writter"+ex);
             }
         }
     }
