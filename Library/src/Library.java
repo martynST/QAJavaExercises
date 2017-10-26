@@ -1,5 +1,7 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Library {
     private int idItem = 0;
@@ -31,6 +33,16 @@ public class Library {
     {
         library.remove(i);
         i.setId(0);
+    }
+    public void addItems(ArrayList<Item> myItems)
+    {
+        for (Item i : myItems)
+            this.addItem(i);
+    }
+    public void removeItems(ArrayList<Item> myItems)
+    {
+        for (Item i : myItems)
+            this.removeItem(i);
     }
 
     public void registerPerson(Person p, int maxBorrow)
@@ -95,18 +107,31 @@ public class Library {
         {
             returnString += i.toString() + "\n";
         }
-        returnString += "\n\nMEMBERS\n\n";
+        returnString += "\nMEMBERS\n\n";
         for (Person p : members)
         {
             returnString += p.toString() + "\n";
         }
         return returnString;
     }
+    public Item searchById(int id)
+    {
+        for (Item i : library)
+        {
+            if (i.getId() == id)
+                return i;
+        }
+        return null;
+    }
 
     public void writeLibrary(String path)
     {
+        write(library.toArray(), path+"\\Library.txt");
+        write(members.toArray(), path+"\\Members.txt");
+    }
+    private void write(Object[] myList, String path)
+    {
         BufferedWriter bw = null;
-
         try {
 
             File file = new File(path);
@@ -116,13 +141,12 @@ public class Library {
 
             FileWriter fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
-            for (Item i : library)
+            for (Object o : myList)
             {
-                String thisItem = i.toString();
-                bw.write(thisItem);
+                String thisElement = o.toString();
+                bw.write(thisElement);
                 bw.newLine();
             }
-
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {
@@ -135,6 +159,14 @@ public class Library {
         }
     }
     public void readLibrary(String path)
+    {
+        ArrayList<String> itemString = read(path+"\\Library.txt");
+        ArrayList<String> memberString = read(path+"\\Members.txt");
+        importItems(parseString(itemString));
+        importMembers(parseString(memberString));
+        syncLibrary();
+    }
+    private ArrayList<String> read(String path)
     {
         BufferedReader br = null;
         ArrayList<String> lines = new ArrayList<String>();
@@ -159,25 +191,62 @@ public class Library {
                 System.out.println("Error in closing the buffered Reader");
             }
         }
-        parseLines(lines);
+        return lines;
     }
-    private void parseLines(ArrayList<String> lines)
+    private ArrayList<ArrayList<String>> parseString(ArrayList<String> lines)
     {
-        ArrayList<Person> people = new ArrayList<Person>();
-        ArrayList<String> inputs = new ArrayList<String>();
-        for (String s : lines)
+        ArrayList<ArrayList<String>> listOfLists = new ArrayList<ArrayList<String>>();
+        for (int i = 0; i < lines.size(); i++)
         {
-            while (s.indexOf(",") != -1)
+            listOfLists.add((new ArrayList<String>()));
+            while (lines.get(i).indexOf(",") != -1)
             {
-                inputs.add(s.substring(s.indexOf(":")+2,s.indexOf(",")));
-                s = s.replace(s,s.substring(s.indexOf(",") + 2));
+                listOfLists.get(i).add(lines.get(i).substring(0,lines.get(i).indexOf(",")));
+                lines.set(i,lines.get(i).substring(lines.get(i).indexOf(",")+1));
             }
-            inputs.add(s.substring(s.indexOf(":")+2,s.indexOf(".")));
+            listOfLists.get(i).add(lines.get(i));
+        }
+        return listOfLists;
+    }
+    private void importItems(ArrayList<ArrayList<String>> myItems)
+    {
+        library.removeAll(library);
+        for (ArrayList<String> arr : myItems)
+        {
             try {
-                //people.add(new Person(inputs.get(0),inputs.get(1),Integer.parseInt(inputs.get(2))));
+                int year = Integer.parseInt(arr.get(3));
+                int id = Integer.parseInt(arr.get(4));
+                boolean isFiction = Boolean.parseBoolean(arr.get(7));
+                library.add(new Book(arr.get(0),arr.get(1),arr.get(2),year,id,arr.get(5),arr.get(6),isFiction));
             } catch (Exception e) {
-                System.out.println("Error parsing integer" + e);
+                System.out.println("Import error");
             }
         }
+    }
+    private void importMembers(ArrayList<ArrayList<String>> myItems)
+    {
+        members.removeAll(members);
+        for (ArrayList<String> arr : myItems)
+        {
+            try {
+                LinkedList<Item> borrowed = new LinkedList<>();
+                for (int i = 3; i < arr.size(); i++)
+                {
+                    borrowed.add(this.searchById(Integer.parseInt(arr.get(i))));
+                }
+                members.add(new Person(Integer.parseInt(arr.get(0)),arr.get(1),Integer.parseInt(arr.get(2)), borrowed));
+            } catch (Exception e) {
+                System.out.println("Import error");
+            }
+        }
+    }
+    public void reset()
+    {
+        library.removeAll(library);
+        members.removeAll(members);
+    }
+    public void syncLibrary()
+    {
+
     }
 }

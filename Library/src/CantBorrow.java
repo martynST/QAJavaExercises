@@ -1,6 +1,6 @@
 public class CantBorrow extends Item {
-    public CantBorrow(String title, String author, int year, String type)
+    public CantBorrow(String type, String title, String author, int year)
     {
-        super(title, author, year, type);
+        super(type, title, author, year);
     }
 }

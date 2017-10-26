@@ -11,6 +11,14 @@ public class Person {
     {
         this.name = name;
     }
+    public Person (int id, String name, int maxBorrow, LinkedList<Item> borrowed)
+    {
+        this.name = name;
+        this.id = id;
+        this.maxBorrow = maxBorrow;
+        this.borrowed = borrowed;
+        this.isRegistered = true;
+    }
 
     public void checkOut(Item i)
     {
@@ -31,7 +39,6 @@ public class Person {
         this.id = 0;
     }
 
-
     public void update(String name)
     {
         this.name = name;
@@ -48,12 +55,29 @@ public class Person {
 
     public String toString()
     {
+        String returnString;
+        String sep = System.lineSeparator();
         if (isRegistered)
-            return "ID: " + id + ", Name: " + name + ", Max Borrow Allowance: " + maxBorrow + ".";
+        {
+            returnString =  id + "," + name + "," + maxBorrow + ",";
+            for (int i = 0; i < borrowed.size(); i++)
+            {
+                returnString += borrowed.get(i).getId();
+                if (i != borrowed.size() -1 )
+                    returnString += ",";
+            }
+            return returnString;
+        }
         else
-            return "Name: " + name + ".";
+            return name;
     }
-
+    public void syncWithItems()
+    {
+        for (Item i : borrowed)
+        {
+            ((CanBorrow)i).syncPerson(this);
+        }
+    }
 
 
     public int getId()

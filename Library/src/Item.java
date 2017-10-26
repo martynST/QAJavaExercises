@@ -5,7 +5,7 @@ public abstract class Item {
     private int year;
     private String type;
 
-    public Item (String title, String author, int year, String type)
+    public Item (String type, String title, String author, int year)
     {
         this.title = title;
         this.author = author;
@@ -13,6 +13,14 @@ public abstract class Item {
         this.type = type;
     }
     public void setId(int id) {
+        this.id = id;
+    }
+    public Item (String type, String title, String author, int year, int id)
+    {
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.type = type;
         this.id = id;
     }
 
@@ -68,6 +76,6 @@ public abstract class Item {
 
     public String toString()
     {
-        return type + ", ID: " + id + ", Title: " + title + ", Author: " + author + ", Year: " + year;
+        return type + "," + title + "," + author + "," + year + ","  + id;
     }
 }

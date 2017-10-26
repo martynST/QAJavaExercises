@@ -5,7 +5,7 @@ public class Thesis extends CantBorrow implements Academic{
 
     public Thesis (String title, String author, int year)
     {
-        super(title, author, year, "Thesis");
+        super("thesis", title, author, year);
     }
     public void addCitation(Item i)
     {

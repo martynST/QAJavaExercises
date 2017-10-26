@@ -6,13 +6,21 @@ public class Book extends CanBorrow{
 
     public Book (String title, String author, int year, String cover, String genre, boolean isFiction)
     {
-        super(title, author, year, "Book");
+        super("book", title, author, year);
         this.cover = cover;
         this.genre = genre;
         this.isFiction = isFiction;
     }
+    public Book (String type, String title, String author, int year, int id, String cover, String genre, boolean isFiction)
+    {
+        super("book", title, author, year, id);
+        this.cover = cover;
+        this.genre = genre;
+        this.isFiction = isFiction;
+
+    }
     public String toString()
     {
-        return cover + " " + super.toString() + ", Genre: " + genre;
+        return super.toString() + "," + cover + "," + genre + "," + isFiction;
     }
 }
