@@ -5,8 +5,8 @@ import java.util.LinkedList;
 public class Library {
     private int idItem = 0;
     private int idPerson = 0;
-    ArrayList<Item> library = new ArrayList<Item>();
-    ArrayList<Person> members = new ArrayList<Person>();
+    private ArrayList<Item> library = new ArrayList<Item>();
+    private ArrayList<Person> members = new ArrayList<Person>();
 
     public void checkOut(Item i, Person p)
     {
@@ -14,8 +14,6 @@ public class Library {
         {
             if (!((CanBorrow) i).getIsCheckedOut() && p.getMaxBorrow() > p.getBorrowed().size())
                 ((CanBorrow) i).checkOut(p);
-        } else {
-
         }
     }
     public void checkIn(Item i)
@@ -142,13 +140,9 @@ public class Library {
     public boolean writeLibrary(String path)
     {
 
-        if (write(library.toArray(), path + "\\Library.txt"))
-            if(write(members.toArray(), path + "\\Members.txt"))
+        if (write(library.toArray(), path + "\\Library.txt") && write(members.toArray(), path + "\\Members.txt"))
                 return true;
-            else
-                return false;
-        else
-            return false;
+        return false;
 
     }
     private boolean write(Object[] myList, String path)

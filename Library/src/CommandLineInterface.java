@@ -231,9 +231,9 @@ public class CommandLineInterface {
                     System.out.println("Please confirm this correct item:\n" + i.getId() + ": " + i.getTitle());
                     yesNo = nextLine();
                 }
-                if (yesNo.equals("YES")) {
+                if ("YES".equals(yesNo)) {
                     if (i instanceof CanBorrow) {
-                        if (((CanBorrow) i).getIsCheckedOut() == true) {
+                        if (((CanBorrow) i).getIsCheckedOut()) {
                             System.out.println("This item is current check out.");
                             return null;
                         }
@@ -384,11 +384,7 @@ public class CommandLineInterface {
     }
 
     private boolean isValidType(String type) {
-        if ("BOOK".equals(type))
-            return true;
-        else if ("DISERTATION".equals(type))
-            return true;
-        else if ("THESIS".equals(type))
+        if ("BOOK".equals(type) || "DISERTATION".equals(type) || "THESIS".equals(type))
             return true;
         else
             return false;
@@ -415,18 +411,14 @@ public class CommandLineInterface {
     }
 
     private boolean isValidFiction(String fNf) {
-        if ("FICTION".equals(fNf))
-            return true;
-        else if ("NON-FICTION".equals(fNf))
+        if ("FICTION".equals(fNf) || "NON-FICTION".equals(fNf))
             return true;
         else
             return false;
     }
 
     private boolean isValidYesNo(String yesNo) {
-        if ("YES".equals(yesNo))
-            return true;
-        else if ("NO".equals(yesNo))
+        if ("YES".equals(yesNo) || "NO".equals(yesNo))
             return true;
         else
             return false;
